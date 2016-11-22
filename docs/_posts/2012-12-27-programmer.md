@@ -4,9 +4,7 @@ title: 'プログラマ用'
 layout: nil
 ---
 
-こ↑こ↓みて、どうぞ
-
-http://hitkey.nekokan.dyndns.info/cmdsJP.htm#BMS
+[こ↑こ↓](http://hitkey.nekokan.dyndns.info/cmdsJP.htm#BMS)みて、どうぞ
 
 ## ヘッダフィールド
 
