@@ -1,41 +1,42 @@
 ---
-title: 'Response status codes'
+title: '譜面製作マニュアル'
 
 layout: nil
 ---
 
-### Success
+# 譜面作成手順
 
-Successes differ from errors in that their body may not be a simple response object with a code and a message. The headers however are consistent across all calls:
+前回同様 [bmse](https://github.com/Drossel-Studio/BMSE/releases) を使います.
 
-* `GET`, `PUT`, `DELETE` returns `200 OK` on success,
-* `POST ` returns 201 on success,
+## 楽曲開始位置について
+前作と違って曲開始位置を譜面で指定せよとのこと.
 
-When [retrieving stuff](#get-stuff) for example:
+曲開始小節の先頭の B01 レーンに曲データ(01 番音符)を配置.
 
-```Status: 200 OK```
-```{
-    {
-        id: thing_1,
-        name: 'My first thing'
-    },
-    {
-        id: thing_2,
-        name: 'My second thing'
-    }
-}```
+曲開始小節は要調整だが今のところ#002 小節目を予定.
 
-### Error
+## 使用レーンについて
+使用するのは下画像3~5の3レーンと2の皿部分、使用する音符は番号 02 番と 03 番で
 
-Error responses are simply returning [standard HTTP error codes](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) along with some additional information:
+す
 
-* The error code is sent back as a status header,
-* The body includes an object describing both the code and message (for debugging and/or display purposes),
+レーンは実際のプレイ画面で下から3、4、5と対応
 
-For a call with an invalid authentication token for example:
+ノーツは2種類、通常ノーツを 02 番、光るノーツを 03 番と定義
 
-```Status: 401 Access denied```
-```{
-    code: 401,
-    message: 'Access denied: invalid authentication token.'
-}```
+再生は UBMpleyer で可、02 ノーツと 03 ノーツの見た目での区別がつかないのでショット
+
+音を指定しておくといいかも
+
+# その他
+譜面ヘッダ情報は BMSE エディタ右上
+
+基本タブ内情報は全部記述(不明なら作曲者に聞く)
+
+拡張タブ内、#rank に譜面の難易度を設定
+
+譜面ファイルは UTF-8(BOM なし)で統一
+
+譜面ファイル名は[曲を表すキーワード]_[難易度].bms で統一
+
+例:琴古主との邂逅ノーマル:furunushi_n.bms
