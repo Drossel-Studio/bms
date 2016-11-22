@@ -4,4 +4,4 @@ permalink: ':title'
 pygments: true
 safe: false
 highlighter: rouge
-title: 'Carte'
+title: 'コトノネJson仕様書'
