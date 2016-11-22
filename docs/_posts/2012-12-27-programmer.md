@@ -6,7 +6,7 @@ layout: nil
 
 [こ↑こ↓](http://hitkey.nekokan.dyndns.info/cmdsJP.htm#BMS)みて、どうぞ
 
-## ヘッダフィールド
+# ヘッダフィールド
 
 - \#PLAYER :プレイサイド、必ず 1 指定(どうでもいい)
 
@@ -29,7 +29,7 @@ layout: nil
 - \#WAV03 :ショット音(光るノーツ)
 
 
-メインデータフィールド
+# メインデータフィールド
 
 `#xxxoo:~`
 
