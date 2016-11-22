@@ -10,25 +10,25 @@ http://hitkey.nekokan.dyndns.info/cmdsJP.htm#BMS
 
 ## ヘッダフィールド
 
-- #PLAYER :プレイサイド、必ず 1 指定(どうでもいい)
+- \#PLAYER :プレイサイド、必ず 1 指定(どうでもいい)
 
-- #GENRE :ジャンル
+- \#GENRE :ジャンル
 
-- #TITLE :タイトル
+- \#TITLE :タイトル
 
-- #ARTIST :作曲者
+- \#ARTIST :作曲者
 
-- #BPM :初期 BPM
+- \#BPM :初期 BPM
 
-- #PLAYLEVEL :曲ごとの難易度(とりあえず 1~10)
+- \#PLAYLEVEL :曲ごとの難易度(とりあえず 1~10)
 
-- #RANK :大雑把な難易度(1 が easy,2 が normal,3 が difficulty)
+- \#RANK :大雑把な難易度(1 が easy,2 が normal,3 が difficulty)
 
-- #WAV01 :曲データ
+- \#WAV01 :曲データ
 
-- #WAV02 :ショット音(通常ノーツ)
+- \#WAV02 :ショット音(通常ノーツ)
 
-- #WAV03 :ショット音(光るノーツ)
+- \#WAV03 :ショット音(光るノーツ)
 
 
 メインデータフィールド
