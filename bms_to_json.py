@@ -71,7 +71,14 @@ def read_start(bms):
     while head != -1:
         head = bms.find("#", head+1)
         if int(bms[head+4:head+6]) == 1:
-            return int(bms[head+1:head+4])
+            line = int(bms[head+1:head+4])
+            slice_start = head+7
+            slice_end = bms.find("\n", head)
+            data = slice_two(bms[slice_start:slice_end], 10)
+            return {
+                "line": line,
+                "data": data
+            }
 
 
 def read_bpmchange(bms):
@@ -82,7 +89,7 @@ def read_bpmchange(bms):
         if head == -1:
             break
         if int(bms[head+4:head+6]) == 3:
-            line = int(bms[head+1:head+3])
+            line = int(bms[head+1:head+4])
             index = bms.find(":", head)
             slice_start = index+1
             slice_end = bms.find("\n", index)
