@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
 import json
 import os.path
 import sys
@@ -28,10 +31,10 @@ def read_header(bms, key, is_int):
     return ret
 
 
-def slice_two(data):
+def slice_two(data, digit=10):
     num = []
     for i in range(0, len(data), 2):
-        num.append(int(data[i:i+2]))
+        num.append(int(data[i:i+2], digit))
     return num
 
 
@@ -76,11 +79,18 @@ def read_bpmchange(bms):
     head = bms.find("MAIN DATA FIELD")
     while head != -1:
         head = bms.find("#", head+1)
-        if bms[head+4:head+6] == 3:
+        if head == -1:
+            break
+        if int(bms[head+4:head+6]) == 3:
             line = int(bms[head+1:head+3])
             index = bms.find(":", head)
-            value = int(bms[index+1:index+3])
-            bpmchange.append(int(line, value))
+            slice_start = index+1
+            slice_end = bms.find("\n", index)
+            value = slice_two(bms[slice_start:slice_end], 16)
+            bpmchange.append({
+                "line": line,
+                "value": value
+            })
     return bpmchange
 
 
@@ -129,11 +139,11 @@ if __name__ == "__main__":
     else:
         FILES.append(PATH)
     for f in FILES:
-        if ".bms" not in f:
+        if ".bms" not in f and ".bme" not in f:
             continue
         print("Convert:{}".format(f))
         jsonData = read_bms(f)
         root, _ = os.path.splitext(f)
-        output = open(root+".json", 'w')
+        output = open(root + ".json", 'w')
         output.write(jsonData)
         output.close()
