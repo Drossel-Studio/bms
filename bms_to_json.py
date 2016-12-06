@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+import glob
 import json
 import os.path
 import sys
@@ -13,7 +14,7 @@ def read_header(bms, key, is_int):
     if head == -1:
         return "NONE"
     if key == "WAV":
-        wav = ""
+        wav = []
         while head != -1:
             start = head+len(key)+3
             end = bms.find("\n", head)
@@ -66,19 +67,24 @@ def read_main(bms):
     return main_data
 
 
-def read_start(bms):
+def read_start(bms, initialBpm):
+    if initialBpm is None:
+        print("Error: BPMが不正です")
+        exit(1)
     head = bms.find("MAIN DATA FIELD")
     while head != -1:
         head = bms.find("#", head+1)
-        if int(bms[head+4:head+6]) == 1:
-            line = int(bms[head+1:head+4])
-            slice_start = head+7
-            slice_end = bms.find("\n", head)
-            data = slice_two(bms[slice_start:slice_end], 10)
-            return {
-                "line": line,
-                "data": data
-            }
+        if int(bms[head+4:head+6]) != 1:
+            continue
+        line = int(bms[head+1:head+4])
+        slice_start = head+7
+        slice_end = bms.find("\n", head)
+        data = slice_two(bms[slice_start:slice_end], 10)
+        # 1小節の秒数
+        one_line_time = 60.0 / initialBpm * 4
+        before_line_time = one_line_time * line
+        current_line_time = one_line_time * data.index(1) / len(data)
+        return int((before_line_time + current_line_time) * 1000)
 
 
 def read_bpmchange(bms):
@@ -93,10 +99,10 @@ def read_bpmchange(bms):
             index = bms.find(":", head)
             slice_start = index+1
             slice_end = bms.find("\n", index)
-            value = slice_two(bms[slice_start:slice_end], 16)
+            data = slice_two(bms[slice_start:slice_end], 16)
             bpmchange.append({
                 "line": line,
-                "value": value
+                "data": data
             })
     return bpmchange
 
@@ -125,7 +131,7 @@ def read_bms(filename):
     for key in header_integer_list:
         header[key] = read_header(bms, key, True)
     main = read_main(bms)
-    start = read_start(bms)
+    start = read_start(bms, header["bpm"])
     bpm = read_bpmchange(bms)
 
     json_object = {
@@ -137,20 +143,30 @@ def read_bms(filename):
     return json.dumps(json_object, ensure_ascii=False)
 
 
-if __name__ == "__main__":
-    PATH = sys.argv[1]
-    ROOT, EXT = os.path.splitext(PATH)
-    FILES = []
-    if os.path.isdir(PATH):
-        FILES = os.listdir(PATH)
-    else:
-        FILES.append(PATH)
-    for f in FILES:
-        if ".bms" not in f and ".bme" not in f:
-            continue
-        print("Convert:{}".format(f))
+def find_all_files(directory):
+    for root, dirs, files in os.walk(directory):
+        yield root
+        for file in files:
+            yield os.path.join(root, file)
+
+
+def convert(f):
+    try:
         jsonData = read_bms(f)
-        root, _ = os.path.splitext(f)
+        base = os.path.basename(f)
+        root, _ = os.path.splitext(base)
         output = open(root + ".json", 'w')
         output.write(jsonData)
         output.close()
+    except Exception:
+        print("Error:", sys.exc_info()[0])
+
+
+if __name__ == "__main__":
+    PATH = sys.argv[1]
+
+    for f in find_all_files(PATH):
+        if ".bms" not in f and ".bme" not in f:
+            continue
+        print("Convert:{}".format(f))
+        convert(f)
