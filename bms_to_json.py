@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import glob
 import json
 import os.path
 import sys
@@ -144,7 +143,7 @@ def read_bms(filename):
 
 
 def find_all_files(directory):
-    for root, dirs, files in os.walk(directory):
+    for root, _, files in os.walk(directory):
         yield root
         for file in files:
             yield os.path.join(root, file)
@@ -152,11 +151,11 @@ def find_all_files(directory):
 
 def convert(f):
     try:
-        jsonData = read_bms(f)
+        jsondata = read_bms(f)
         base = os.path.basename(f)
         root, _ = os.path.splitext(base)
         output = open(root + ".json", 'w')
-        output.write(jsonData)
+        output.write(jsondata)
         output.close()
     except Exception:
         print("Error:", sys.exc_info()[0])
