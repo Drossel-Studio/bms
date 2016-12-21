@@ -33,7 +33,7 @@ def read_header(bms, key, is_int):
 
 def slice_two(data, digit=10):
     num = []
-    for i in range(0, len(data), 2):
+    for i in range(0, len(data)-2, 2):
         num.append(int(data[i:i+2], digit))
     return num
 
@@ -105,7 +105,52 @@ def read_bpmchange(bms):
             })
     return bpmchange
 
+def calc_notes_weight(bms):
+    head = bms.find("MAIN DATA FIELD")
+    #notesnum[i] 添え字が実際のbmsファイルのノーツ番号と対応
+    notesnum = [0,0,0,0,0,0,0,0]
+    while head != -1:
+        head = bms.find("#", head+1)
+        if head == -1:
+            break
+        lane = int(bms[head+4:head+4+2])
+        if lane not in range(11, 14):
+            continue
+        slice_start = bms.find(":", head) + 1
+        slice_end = bms.find("\n", head)
+        data = slice_two(bms[slice_start:slice_end])
+        for notes in data:
+            if notes == 0:
+                continue
+            notesnum[notes] += 1
 
+    notessum = sum(notesnum)
+    print "---notesrate-------------"
+    print "normal  : {0:>3} ({1:.1f}%)".format(notesnum[2],notesnum[2]*1.0/notessum*100) 
+    print "red     : {0:>3} ({1:.1f}%)".format(notesnum[3],notesnum[3]*1.0/notessum*100) 
+    print "long    : {0:>3} ({1:.1f}%)".format(notesnum[4],notesnum[4]*1.0/notessum*100) 
+    print "slide   : {0:>3} ({1:.1f}%)".format(notesnum[5]+notesnum[6],(notesnum[5]+notesnum[6])*1.0/notessum*100) 
+    print "special : {0:>3} ({1:.1f}%)".format(notesnum[7],notesnum[7]*1.0/notessum*100)
+    print "-------------------------"
+
+    notes_weight = {
+        "normal" : 1,
+        "each"   : 2,
+        "long"   : 2,
+        "slide"  : 0.5,
+        "special": 5
+    }
+    if (notesnum[5] + notesnum[6]) == 0:
+        return notes_weight
+    
+    slide_weight = (notes_weight["normal"]*notesnum[2] + notes_weight["each"]*notesnum[3] * 0.6) / (notesnum[5]+notesnum[6])
+    if slide_weight < 0.5:
+        notes_weight[3] = round(slide_weight,3)
+        print "slide_weight is corrected"
+        
+    return notes_weight
+    
+    
 def read_bms(filename):
     header_string_list = [
         "genre",
@@ -123,7 +168,7 @@ def read_bms(filename):
     main = []
     start = 0
     bpm = []
-
+    notes_weight = {}
     bms = open(filename).read()
     for key in header_string_list:
         header[key] = read_header(bms, key, False)
@@ -132,12 +177,14 @@ def read_bms(filename):
     main = read_main(bms)
     start = read_start(bms, header["bpm"])
     bpm = read_bpmchange(bms)
-
+    notes_weight = calc_notes_weight(bms)
+    print notes_weight
     json_object = {
         "header": header,
         "main": main,
         "start": start,
-        "bpm": bpm
+        "bpm": bpm,
+        "notes_weight": notes_weight
     }
     return json.dumps(json_object, ensure_ascii=False)
 
