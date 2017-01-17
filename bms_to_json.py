@@ -33,7 +33,7 @@ def read_header(bms, key, is_int):
 
 def slice_two(data, digit=10):
     num = []
-    for i in range(0, len(data)-2, 2):
+    for i in range(0, len(data), 2):
         num.append(int(data[i:i+2], digit))
     return num
 
