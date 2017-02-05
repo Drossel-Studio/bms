@@ -199,15 +199,15 @@ def find_all_files(directory):
 
 
 def convert(f):
-    #try:
+    try:
         jsondata = read_bms(f)
         base = os.path.basename(f)
         root, _ = os.path.splitext(base)
         output = open(root + ".json", 'w')
         output.write(jsondata)
         output.close()
-    #except Exception:
-    #    print("Error:", sys.exc_info()[0])
+    except Exception:
+        print("Error:", sys.exc_info()[0])
 
 
 if __name__ == "__main__":
