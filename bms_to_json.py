@@ -34,7 +34,9 @@ def read_header(bms, key, is_int):
 def slice_two(data, digit=10):
     num = []
     for i in range(0, len(data), 2):
-        num.append(int(data[i:i+2], digit))
+        num_text = data[i:i+2]
+        if num_text.isdigit():
+            num.append(int(num_text, digit))
     return num
 
 
@@ -197,15 +199,15 @@ def find_all_files(directory):
 
 
 def convert(f):
-    try:
+    #try:
         jsondata = read_bms(f)
         base = os.path.basename(f)
         root, _ = os.path.splitext(base)
         output = open(root + ".json", 'w')
         output.write(jsondata)
         output.close()
-    except Exception:
-        print("Error:", sys.exc_info()[0])
+    #except Exception:
+    #    print("Error:", sys.exc_info()[0])
 
 
 if __name__ == "__main__":
