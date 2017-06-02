@@ -127,13 +127,13 @@ def calc_notes_weight(bms):
             notesnum[notes] += 1
 
     notessum = sum(notesnum)
-    print "---notesrate-------------"
-    print "normal  : {0:>3} ({1:.1f}%)".format(notesnum[2],notesnum[2]*1.0/notessum*100) 
-    print "red     : {0:>3} ({1:.1f}%)".format(notesnum[3],notesnum[3]*1.0/notessum*100) 
-    print "long    : {0:>3} ({1:.1f}%)".format(notesnum[4],notesnum[4]*1.0/notessum*100) 
-    print "slide   : {0:>3} ({1:.1f}%)".format(notesnum[5]+notesnum[6],(notesnum[5]+notesnum[6])*1.0/notessum*100) 
-    print "special : {0:>3} ({1:.1f}%)".format(notesnum[7],notesnum[7]*1.0/notessum*100)
-    print "-------------------------"
+    print("---notesrate-------------")
+    print("normal  : {0:>3} ({1:.1f}%)".format(notesnum[2],notesnum[2]*1.0/notessum*100))
+    print("red     : {0:>3} ({1:.1f}%)".format(notesnum[3],notesnum[3]*1.0/notessum*100))
+    print("long    : {0:>3} ({1:.1f}%)".format(notesnum[4],notesnum[4]*1.0/notessum*100))
+    print("slide   : {0:>3} ({1:.1f}%)".format(notesnum[5]+notesnum[6],(notesnum[5]+notesnum[6])*1.0/notessum*100))
+    print("special : {0:>3} ({1:.1f}%)".format(notesnum[7],notesnum[7]*1.0/notessum*100))
+    print("-------------------------")
 
     notes_weight = {
         "normal" : 1,
