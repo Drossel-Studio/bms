@@ -190,22 +190,33 @@ def find_all_files(directory):
 
 
 def convert(f):
+    exportPath = ""
     try:
         jsondata = read_bms(f)
-        base = os.path.basename(f)
-        root, _ = os.path.splitext(base)
-        output = open(root + ".json", 'w')
+        path, filename = os.path.split(f)
+        root, _ = os.path.splitext(filename)
+        exportPath = os.path.join(path, root + ".json")
+        output = open(exportPath, 'w')
         output.write(jsondata)
         output.close()
     except Exception:
         print("Error:", sys.exc_info()[0])
+    return exportPath
 
 
 if __name__ == "__main__":
-    PATH = sys.argv[1]
+    PATH = ""
+    if len(sys.argv) > 1:
+        PATH = sys.argv[1]
+    else:
+        print("Error:引数にフォルダパスを指定してください")
+        exit(0)
 
     for f in find_all_files(PATH):
         if ".bms" not in f and ".bme" not in f:
             continue
-        print("Convert:{}".format(f))
-        convert(f)
+        print("Convert:%s" % f)
+        exportPath = convert(f)
+        if len(exportPath) > 0:
+            print("Export:%s" % exportPath)
+        print()
