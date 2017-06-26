@@ -101,6 +101,11 @@ def read_bpmchange(bms):
     return bpmchange
 
 
+def printNoteRate(name, sum, allsum):
+    rate = float(sum) / allsum * 100.0
+    print(f"{name:<8}: {sum:>3} ({rate:.1f}%)")
+
+
 def calc_notes_weight(bms):
     head = bms.find("MAIN DATA FIELD")
     # notesnum[i] 添え字が実際のbmsファイルのノーツ番号と対応
@@ -121,18 +126,16 @@ def calc_notes_weight(bms):
             notesnum[notes] += 1
 
     notessum = sum(notesnum)
+    noteType = {
+        "normal": 2,
+        "red": 3,
+        "long": 4,
+        "slide": 6,
+        "special": 7
+    }
     print("---notesrate-------------")
-    print("normal  : {0:>3} ({1:.1f}%)".format(notesnum[2], notesnum[2] * 1.0 /
-                                               notessum * 100))
-    print("red     : {0:>3} ({1:.1f}%)".format(notesnum[3], notesnum[3] * 1.0 /
-                                               notessum * 100))
-    print("long    : {0:>3} ({1:.1f}%)".format(notesnum[4], notesnum[4] * 1.0 /
-                                               notessum * 100))
-    print("slide   : {0:>3} ({1:.1f}%)".format(notesnum[5] + notesnum[6], (
-        notesnum[5] + notesnum[6]) * 1.0 / notessum * 100))
-    print("special : {0:>3} ({1:.1f}%)".format(notesnum[7], notesnum[7] * 1.0 /
-                                               notessum * 100))
-
+    for k, v in noteType.items():
+        printNoteRate(k, notesnum[v], notessum)
     print("-------------------------")
 
     notes_weight = {
