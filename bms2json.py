@@ -6,6 +6,19 @@ import os.path
 import sys
 
 
+def getWav(bms, key, head):
+    wav = []
+    while head != -1:
+        start = head + len(key) + 3
+        end = bms.find("\n", head)
+        wav += bms[start:end] + ","
+        search_key = "#{}".format(key)
+        head = bms.find(search_key, head + 1)
+        if head == -1:
+            head = bms.find(search_key.upper())
+    return wav
+
+
 def read_header(bms, key, is_int):
     head = bms.find(key)
     if head == -1:
@@ -13,16 +26,7 @@ def read_header(bms, key, is_int):
     if head == -1:
         return "NONE"
     if key == "WAV":
-        wav = []
-        while head != -1:
-            start = head + len(key) + 3
-            end = bms.find("\n", head)
-            wav += bms[start:end] + ","
-            search_key = "#{}".format(key)
-            head = bms.find(search_key, head + 1)
-            if head == -1:
-                head = bms.find(search_key.upper())
-        return wav
+        return getWav(bms, key, head)
     start = head + len(key) + 1
     end = bms.find("\n", head)
     ret = bms[start:end]
