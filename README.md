@@ -1,8 +1,6 @@
 **BMS2JSONConverter**
 ====
 
-Contact Assist API repository.
-
 ## Description
 
 ## Requirements
