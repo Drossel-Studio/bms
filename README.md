@@ -1,10 +1,25 @@
-# BMS2JSONConverter
+**BMS2JSONConverter**
+====
 
-## 必要なもの
-- Python3.5.2の実行環境
+Contact Assist API repository.
 
-## 使い方
+## Description
+
+## Requirements
+- Python 3.5.2
+
+## Usage
+### convert
 ```
-$ python bms2json.py <ディレクトリ名>
+$ python bms2json.py <path>
 ```
-<ディレクトリ名>には.bmsファイルの存在するディレクトリパスを入れてください
+Please put the directory path where the .bms file exists in <path>
+
+## Documents
+
+## Contribution
+
+## Licence
+
+## Author
+@yuki1051
