@@ -196,34 +196,53 @@ def find_all_files(directory):
             yield os.path.join(root, file)
 
 
-def convert(f):
+def convert(f, outputPath=None):
     exportPath = ""
+    result = False
     try:
         jsondata = read_bms(f)
         path, filename = os.path.split(f)
+        if outputPath is not None:
+            path = outputPath
         root, _ = os.path.splitext(filename)
         exportPath = os.path.join(path, root + ".json")
         output = open(exportPath, 'w')
         output.write(jsondata)
         output.close()
+        result = True
     except Exception:
-        print("Error:", sys.exc_info()[0])
-    return exportPath
+        print(f"\033[31mError: {sys.exc_info()[0]}\033[0m")
+    return exportPath, result
 
 
 if __name__ == "__main__":
     PATH = ""
+    OUTPUT = None
+    totalCount = 0
+    successCount = 0
+    failureCount = 0
     if len(sys.argv) > 1:
         PATH = sys.argv[1]
     else:
         print("Error:引数にフォルダパスを指定してください")
         exit(0)
+    if len(sys.argv) > 2:
+        OUTPUT = sys.argv[2]
 
     for f in find_all_files(PATH):
         if ".bms" not in f and ".bme" not in f:
             continue
-        print("Convert:%s" % f)
-        exportPath = convert(f)
+        totalCount += 1
+        print(f"Convert: {f}")
+        exportPath, result = convert(f, OUTPUT)
+        if result:
+            successCount += 1
+        else:
+            failureCount += 1
         if len(exportPath) > 0:
-            print("Export:%s" % exportPath)
+            print(f"Export: {exportPath}")
         print()
+    print("===SUMMARY===")
+    print(f"TOTAL: {totalCount}")
+    print(f"SUCCESS: \033[32m{successCount}\033[0m")
+    print(f"FAILURE: \033[31m{failureCount}\033[0m")

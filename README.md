@@ -4,14 +4,18 @@
 ## Description
 
 ## Requirements
-- Python 3.5.2
+- Python 3.6
 
 ## Usage
 ### convert
 ```
-$ python bms2json.py <path>
+$ python bms2json.py <path> <output path>
 ```
-Please put the directory path where the .bms file exists in <path>
+Please put the directory path where the .bms file exists in <path>.
+
+Please put the directory path to <output path> where you want to store generated json file.
+
+(if <output path> is empty, generated json files are stored in same folder of bms files)
 
 ## Documents
 
