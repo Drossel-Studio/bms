@@ -206,7 +206,9 @@ def convert(f, outputPath=None):
     try:
         jsondata = read_bms(f)
         path, filename = os.path.split(f)
-        if outputPath is not None:
+        if outputPath is None:
+            path = "./json"
+        else:
             path = outputPath
         root, _ = os.path.splitext(filename)
         exportPath = os.path.join(path, root + ".json")
