@@ -4,6 +4,7 @@
 import json
 import os.path
 import sys
+import hashlib
 
 
 def getWav(bms, key, head):
@@ -186,6 +187,9 @@ def read_bms(filename):
         "bpm": bpm,
         "notes_weight": notes_weight
     }
+    objectHash = hashlib.md5(str(json_object).encode('utf-8')).hexdigest()
+    print(f"Hash: {objectHash}")
+    json_object["hash"] = objectHash
     return json.dumps(json_object, ensure_ascii=False)
 
 
