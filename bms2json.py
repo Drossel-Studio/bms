@@ -220,16 +220,13 @@ def convert(f, outputPath=None):
 
 
 if __name__ == "__main__":
-    PATH = ""
+    PATH = "."
     OUTPUT = None
     totalCount = 0
     successCount = 0
     failureCount = 0
     if len(sys.argv) > 1:
         PATH = sys.argv[1]
-    else:
-        print("Error:引数にフォルダパスを指定してください")
-        exit(0)
     if len(sys.argv) > 2:
         OUTPUT = sys.argv[2]
 
