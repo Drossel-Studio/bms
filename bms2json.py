@@ -226,6 +226,8 @@ def convert(f, outputPath=None):
         output.write(jsondata)
         output.close()
         result = True
+    except UnicodeDecodeError:
+        print(f"\033[31mError: 譜面ファイルのエンコードがutf-8ではありません\033[0m")
     except Exception:
         print(f"\033[31mError: {sys.exc_info()[0]}\033[0m")
     return exportPath, result
