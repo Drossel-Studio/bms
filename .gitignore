@@ -1,4 +1,4 @@
-### https://raw.github.com/github/gitignore/7af8eea00b37b330af2b9de94170f1d6aeafb1f0/python.gitignore
+### https://raw.github.com/github/gitignore/68ae2ff9f7ce0176696966539b9807525002893b/Python.gitignore
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -25,6 +25,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -46,6 +47,7 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
+.pytest_cache/
 
 # Translations
 *.mo
@@ -53,6 +55,8 @@ coverage.xml
 
 # Django stuff:
 *.log
+.static_storage/
+.media/
 local_settings.py
 
 # Flask stuff:
@@ -86,6 +90,8 @@ celerybeat-schedule
 env/
 venv/
 ENV/
+env.bak/
+venv.bak/
 
 # Spyder project settings
 .spyderproject
@@ -100,12 +106,4 @@ ENV/
 # mypy
 .mypy_cache/
 
-*.json
-.vscode
-docs
-*.bms
-*.bme
-*.wav
-*.txt
-*.xlsx
-Icon*
+

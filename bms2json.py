@@ -50,21 +50,31 @@ def read_main(bms):
     measure = 0
     main_data = []
     while head != -1:
-        for i in range(11, 14):
+        #print("MAIN")
+        i = 11
+        while i < 14:
+            #print(i)
             head = bms.find("#", head + 1)
             if head == -1:
                 break
+            #print(head)
             lane = int(bms[head + 4:head + 4 + 2])
             if lane not in range(11, 14):
+                #print("NOT LANE")
                 continue
+            #print(int(bms[head + 1:head + 1 + 3]) != measure)
+            #print(lane, i)
+            #print(lane != i)
             if int(bms[head + 1:head + 1 + 3]) != measure or lane != i:
                 head = head - 1
+                i += 1
                 continue
             slice_start = bms.find(":", head) + 1
             slice_end = bms.find("\n", head)
             data = slice_two(bms[slice_start:slice_end])
             main_object = {"line": measure, "channel": lane - 11, "data": data}
             main_data.append(main_object)
+            i += 1
         measure += 1
     return main_data
 
