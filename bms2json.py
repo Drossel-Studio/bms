@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+# This script is obsolete
+
 import json
 import os.path
 import sys
