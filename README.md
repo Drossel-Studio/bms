@@ -17,6 +17,11 @@ Please put the directory path to <output path> where you want to store generated
 
 (if <output path> is empty, generated json files are stored in same folder of bms files)
 
+### バイナリ生成方法
+``` sh
+$ make
+```
+
 ## Documents
 
 ## Contribution
@@ -24,4 +29,4 @@ Please put the directory path to <output path> where you want to store generated
 ## Licence
 
 ## Author
-@yuki1051
+@ykymd
