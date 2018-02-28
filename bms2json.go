@@ -102,16 +102,17 @@ func readBms(filename string) ([]byte, error) {
 		header[key] = readHeader(bms, key)
 	}
 	for _, key := range headerIntegerList {
-		header[key] = readHeader(bms, key)
+		header[key] = 0
+		header[key], err = strconv.Atoi(readHeader(bms, key))
+		if err != nil {
+			panic(err)
+		}
 	}
 	mainData := readMain(bms)
-	initialBpm, err := strconv.Atoi(header["bpm"].(string))
-	if err != nil {
-		panic(err)
-	}
-	//print(initialBpm)
+	initialBpm := header["bpm"].(int)
 	start := readStart(bms, initialBpm)
 	bpm := readBpmchange(bms)
+	//fmt.Println(bpm)
 	noteWeights := calcNoteWeights(bms)
 	//for name, weight := range noteWeights {
 	//	fmt.Print(name)
@@ -121,7 +122,7 @@ func readBms(filename string) ([]byte, error) {
 		"header":       header,
 		"main":         mainData,
 		"start":        start,
-		"bpm":          bpm,
+		"bpm":          bpm, // デフォルト値の調整のため、一旦空配列を定義
 		"notes_weight": noteWeights,
 	}
 	jsonBytes, err := json.Marshal(jsonObject)
@@ -265,16 +266,17 @@ func readStart(bms string, initialBpm int) int {
 			continue
 		}
 		sliceStart := head + 7
-		sliceEnd := search(bms, head, "\n") - 1
+		sliceEnd := search(bms, head, "\n")
 		data := sliceTwo(bms[sliceStart:sliceEnd], 10)
 		// 1小節の秒数
-		oneLineTime := 60.0 / initialBpm * 4
-		beforeLineTime := oneLineTime * line
+		oneLineTime := 60.0 / float64(initialBpm) * 4
+		fmt.Println(oneLineTime)
+		beforeLineTime := oneLineTime * float64(line)
 		i := index(data, 1)
 		if i == -1 {
 			continue
 		}
-		currentLineTime := oneLineTime * index(data, 1) / len(data)
+		currentLineTime := oneLineTime * float64(index(data, 1)) / float64(len(data))
 		return int((beforeLineTime + currentLineTime) * 1000)
 	}
 	panic(fmt.Errorf("startコマンドが存在しません"))
@@ -291,6 +293,7 @@ func index(ary []int, target int) int {
 
 func readBpmchange(bms string) []map[string]interface{} {
 	var bpmchange []map[string]interface{}
+	bpmchange = make([]map[string]interface{}, 0) // 空配列を扱えるように代入する
 	head := search(bms, 0, "MAIN DATA FIELD")
 	for head != -1 {
 		head = search(bms, head+1, "#")
